@@ -1,4 +1,4 @@
-package Week_1;
+package Week_1.Design_patterns_and_principles;
 // Factory Method Pattern - Document Management System
 interface Document {
     void open();

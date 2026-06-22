@@ -1,53 +1,40 @@
-package Week_1;
+package Week_1.JUnit_Testing;
 
+import java.util.Scanner;
 import java.util.Scanner;
 
 public class Assertions {
 
-    static int divide(int a, int b) {
-        if (b == 0) throw new ArithmeticException("Cannot divide by zero!");
-        return a / b;
-    }
-
-    static boolean isEven(int n) {
-        return n % 2 == 0;
-    }
-
-    static String getGrade(int marks) {
-        if (marks >= 90) return "A";
-        if (marks >= 75) return "B";
-        if (marks >= 60) return "C";
-        return "F";
-    }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== Assertions in JUnit ===\n");
+        System.out.println("=== JUnit Assertions Demo ===\n");
 
-        // Division
-        System.out.print("Enter dividend : ");
+        System.out.print("Enter first number  : ");
         int a = sc.nextInt();
-        System.out.print("Enter divisor  : ");
+        System.out.print("Enter second number : ");
         int b = sc.nextInt();
 
-        try {
-            System.out.println("Result         : " + divide(a, b));
-        } catch (ArithmeticException e) {
-            System.out.println("Exception      : " + e.getMessage());
-        }
+        System.out.println("\n--- Assertion Results ---");
 
-        // Even or Odd
-        System.out.print("\nEnter a number to check even/odd: ");
-        int n = sc.nextInt();
-        System.out.println("Is Even? : " + isEven(n));
+        // assertEquals
+        System.out.println("assertEquals  : " + a + " + " + b + " = " + (a + b));
 
-        // Grade
-        System.out.print("\nEnter marks to get grade: ");
-        int marks = sc.nextInt();
-        String grade = getGrade(marks);
-        System.out.println("Grade    : " + grade);
-        System.out.println("Is null? : " + (grade == null));
+        // assertTrue
+        boolean isGreater = a > b;
+        System.out.println("assertTrue    : " + a + " > " + b + " is " + isGreater);
+
+        // assertFalse
+        boolean isLess = a < b;
+        System.out.println("assertFalse   : " + a + " < " + b + " is " + isLess);
+
+        // assertNull
+        String value = null;
+        System.out.println("assertNull    : value is null? " + (value == null));
+
+        // assertNotNull
+        String name = "Cognizant";
+        System.out.println("assertNotNull : name is not null? " + (name != null));
 
         System.out.println("\nAll assertions passed!");
         sc.close();

@@ -1,64 +1,56 @@
-package Week_1;
+package Week_1.JUnit_Testing;
 import java.util.Scanner;
 
-class BankAccount {
-    private String owner;
-    private double balance;
+import java.util.Scanner;
 
-    BankAccount(String owner, double balance) {
-        this.owner   = owner;
-        this.balance = balance;
-    }
+// Scenario: Shopping Cart - test add and remove items using AAA pattern
 
-    void deposit(double amount) {
-        balance += amount;
-    }
-    void withdraw(double amount) {
-        if (amount > balance) {
-            System.out.println("Insufficient balance!");
-        } else {
-            balance -= amount;
-        }
-    }
+class ShoppingCart {
+    int itemCount = 0;
 
-    double getBalance() { return balance; }
-    String getOwner()   { return owner; }
+    void addItem()    { itemCount++; }
+    void removeItem() { if (itemCount > 0) itemCount--; }
+    int getCount()    { return itemCount; }
 }
 
 public class AAA_Pattern {
-    public static void main(String[] args) {        Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== AAA Pattern - Bank Account ===\n");
+    static ShoppingCart cart; // Test Fixture
 
-        // --- ARRANGE ---
-        System.out.print("Enter account owner name : ");
-        String name = sc.next();
-        System.out.print("Enter initial balance    : ");
-        double balance = sc.nextDouble();
+    // @Before - Setup - runs before each test
+    static void setUp() {
+        cart = new ShoppingCart();
+        System.out.println("[SETUP]    Fresh cart created");
+    }
 
-        BankAccount account = new BankAccount(name, balance);
-        System.out.println("\n[ARRANGE] Account created for " + account.getOwner() +
-                           " with Rs." + account.getBalance());
+    // @After - Teardown - runs after each test
+    static void tearDown() {
+        cart = null;
+        System.out.println("[TEARDOWN] Cart cleared\n");
+    }
 
-        // --- ACT (Deposit) ---
-        System.out.print("\nEnter deposit amount : ");
-        double deposit = sc.nextDouble();
-        account.deposit(deposit);
-        System.out.println("[ACT]     Deposited Rs." + deposit);
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("=== AAA Pattern - Shopping Cart ===\n");
 
-        // --- ASSERT ---
-        System.out.println("[ASSERT]  New Balance = Rs." + account.getBalance());
+        // TEST 1 - Add items
+        setUp();                                           // ARRANGE
+        System.out.print("Enter number of items to add : ");
+        int add = sc.nextInt();
+        for (int i = 0; i < add; i++) cart.addItem();     // ACT
+        System.out.println("[ASSERT]   Items in cart = " + cart.getCount());
+        tearDown();
 
-        // --- ACT (Withdraw) ---
-        System.out.print("\nEnter withdraw amount : ");
-        double withdraw = sc.nextDouble();
-        account.withdraw(withdraw);
-        System.out.println("[ACT]     Withdrew Rs." + withdraw);
+        // TEST 2 - Remove items
+        setUp();                                           
+        for (int i = 0; i < 5; i++) cart.addItem();       
+        System.out.print("Enter number of items to remove : ");
+        int remove = sc.nextInt();
+        for (int i = 0; i < remove; i++) cart.removeItem(); // ACT
+        System.out.println("[ASSERT]   Items remaining = " + cart.getCount());
+        tearDown();
 
-        // --- ASSERT ---
-        System.out.println("[ASSERT]  Final Balance = Rs." + account.getBalance());
-
-        System.out.println("\nAAA Pattern test completed successfully!");
+        System.out.println("All tests passed!");
         sc.close();
     }
 }

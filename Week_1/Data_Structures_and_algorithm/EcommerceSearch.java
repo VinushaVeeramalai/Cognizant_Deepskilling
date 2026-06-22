@@ -1,4 +1,4 @@
-package Week_1;
+package Week_1.Data_Structures_and_algorithm;
 import java.util.Scanner;
 
 class Product {
