@@ -1,6 +1,8 @@
 -- Enable server output
 SET SERVEROUTPUT ON;
 
+
+
 -- Create tables
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY,
@@ -49,6 +51,9 @@ CREATE TABLE Employees (
     HireDate DATE
 );
 
+
+
+
 -- Create ErrorLogs table for logging errors
 CREATE TABLE ErrorLogs (
     ErrorID INT PRIMARY KEY,
@@ -56,13 +61,16 @@ CREATE TABLE ErrorLogs (
     ErrorDate DATE
 );
 
--- Scripts for Sample Data Insertion
+
+
+
+
 
 INSERT INTO Customers (CustomerID, Name, DOB, Balance, LastModified)
-VALUES (1, 'John Doe', TO_DATE('1963-05-15', 'YYYY-MM-DD'), 1000, SYSDATE);
+VALUES (1, 'Jane', TO_DATE('1963-05-15', 'YYYY-MM-DD'), 1000, SYSDATE);
 
 INSERT INTO Customers (CustomerID, Name, DOB, Balance, LastModified)
-VALUES (2, 'Jane Smith', TO_DATE('1990-07-20', 'YYYY-MM-DD'), 1500, SYSDATE);
+VALUES (2, 'Jhon Doe', TO_DATE('1990-07-20', 'YYYY-MM-DD'), 1500, SYSDATE);
 
 INSERT INTO Accounts (AccountID, CustomerID, AccountType, Balance, LastModified)
 VALUES (1, 1, 'Savings', 1000, SYSDATE);
@@ -88,25 +96,31 @@ VALUES (1, 'Alice Johnson', 'Manager', 70000, 'HR', TO_DATE('2015-06-15', 'YYYY-
 INSERT INTO Employees (EmployeeID, Name, Position, Salary, Department, HireDate)
 VALUES (2, 'Bob Brown', 'Developer', 60000, 'IT', TO_DATE('2017-03-20', 'YYYY-MM-DD'));
 
+
+
+
+
+
+
 -- SCENARIO - 1
 -- Procedure to Process Monthly Interest for All Savings Accounts
 CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest IS
-    -- Variable to store the number of rows updated
     v_rows_updated NUMBER;
 BEGIN
-
-    -- Update balance for all savings accounts by applying an interest rate of 1%
     UPDATE Accounts
     SET Balance = Balance * 1.01
     WHERE AccountType = 'Savings';
 
-    -- Get the number of rows updated
     v_rows_updated := SQL%ROWCOUNT;
 
-    -- Display the number of rows updated
     DBMS_OUTPUT.PUT_LINE('Number of accounts updated: ' || v_rows_updated);
 END ProcessMonthlyInterest;
 /
+
+
+
+
+
 
 -- SCENARIO -2 
 -- Procedure to Update Employee Bonus Based on Performance
@@ -115,12 +129,17 @@ CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus(
     bonusPercentage IN DECIMAL
 ) IS
 BEGIN
-    -- Update the salary of employees in the specified department by adding the bonus percentage
     UPDATE Employees
     SET Salary = Salary + (Salary * (bonusPercentage / 100))
     WHERE DepartmentID = departmentID;
 END UpdateEmployeeBonus;
 /
+
+
+
+
+
+
 
 -- SCENARIO - 3
 -- Procedure to Transfer Funds Between Accounts
@@ -135,10 +154,8 @@ BEGIN
         PRAGMA EXCEPTION_INIT(insufficientFunds, -20001);
 
     BEGIN
-        -- Start transaction
         SAVEPOINT start_trans;
 
-        -- Check if the from account has enough balance
         DECLARE
             from_balance INT;
         BEGIN
@@ -151,17 +168,14 @@ BEGIN
             END IF;
         END;
 
-        -- Deduct amount from the source account
         UPDATE Accounts
         SET Balance = Balance - amount
         WHERE AccountID = fromAccountID;
 
-        -- Add amount to the destination account
         UPDATE Accounts
         SET Balance = Balance + amount
         WHERE AccountID = toAccountID;
 
-        -- Commit transaction
         COMMIT;
     EXCEPTION
         WHEN insufficientFunds THEN
@@ -175,6 +189,15 @@ BEGIN
     END;
 END TransferFunds;
 /
+
+
+
+
+
+
+
+
+
 
 -- Example calls for the procedures
 BEGIN

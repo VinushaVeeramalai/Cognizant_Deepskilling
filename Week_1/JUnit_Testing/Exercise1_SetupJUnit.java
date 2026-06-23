@@ -34,3 +34,10 @@ public class Exercise1_SetupJUnit {
         sc.close();
     }
 }
+/*<!-- JUnit Dependency in pom.xml -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+</dependency>*/
